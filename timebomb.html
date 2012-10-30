@@ -1,0 +1,136 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>背景バナー表示タイマー</title>
+</head>
+
+<body>
+<script type="text/javascript">
+// JavaScriptオブジェクト
+
+
+// 画像パスとセール期間の設定（それぞれ設定してください）=============================
+
+// 画像パスの指定
+
+	//通常時背景
+	function normal() {
+		document.body.style.backgroundImage = ('url("http://image.rakuten.co.jp/aa-casual/cabinet/img59972685.gif")');
+	}
+	
+	//セール時背景
+	function sale() {
+		document.body.style.backgroundImage = ('url("http://image.rakuten.co.jp/aa-casual/cabinet/free-advertise/img60057788.gif")');
+	}
+
+
+// セール期間の設定
+
+	//セール開始日時
+	var StartYear  = 2012; //年
+	var StartMonth = 11; //月
+	var StartDate  = 3; //日
+	var StartHour  = 10; //時
+	
+	//セール終了日時
+	var LastYear   = 2012; //年
+	var LastMonth  = 11; //月
+	var LastDate   = 5; //日
+	var LastHour   = 2; //時
+
+
+// 画像パスとセール期間の設定　ここまで============================================
+
+
+
+
+// ============ここから下はJavaScriptの理解できる方のみ操作してください============
+
+
+// セール期間のチェック
+var Start = new Date (StartYear, StartMonth, StartDate, StartHour);
+var Last = new Date (LastYear, LastMonth, LastDate, LastHour);
+
+if (Last < Start) {
+	alert("セール開始日時が終了日時より過去になっています。");
+}
+
+// 日付、数値、文字列
+	
+	var y = new Date();
+	var year = y.getFullYear();
+	var month = y.getMonth()+1; //getMonthは0～11で取得のため１加算
+	var date = y.getDate();
+	var hour = y.getHours();
+
+// デバッグ用変数==================================================================
+//
+// 次の変数からコメントを外し、
+// 日時を設定して設定通りの日時のみセール画像が表示されるか確認する
+//
+//	var y = new Date();
+//	var year = 2012;
+//	var month = 10;
+//	var date = 31;
+//	var hour = 10;
+//
+// デバッグ用変数 ここまで=========================================================
+
+
+// 本体	
+
+//年内の処理
+if (year == StartYear && year == LastYear) {
+	console.log("年内に終了");
+	if (month >= StartMonth && month <= LastMonth) {
+		console.log("開始月から終了月の間");
+		if (month == StartMonth && date < StartDate) {
+			console.log("開始日の前");
+			normal();
+		} else if ( month == StartMonth && date == StartDate && hour < StartHour ) {
+			console.log("開始日 開始時間の前");
+			normal();
+		} else if ( month == LastMonth && date > LastDate) {
+			console.log("終了日の後");
+			normal();
+		} else if ( month == LastMonth && date == LastDate && hour >= LastHour ) {
+			console.log("終了日 終了時間の後");
+			normal();
+		} else {
+			console.log("セール期間中");
+			sale();
+		}
+	} else {
+		console.log("セール月に該当しない");
+		normal();
+	}
+} else if ( year >= StartYear && year <= LastYear) {
+	console.log("セール期間中に年を越す場合");
+	if (month <= LastMonth) {
+		console.log("終了月以前");
+		if (date <= LastDate) {
+			console.log("終了日以前");
+			if (date == LastDate && hour >= LastHour) {
+				console.log("終了時間を越えた後");
+				normal();
+			} else {
+				console.log("終了時間まで");
+				sale();
+			}
+		} else {
+			console.log("終了日を越えた後");
+			normal();
+		}
+	} else {
+		console.log("終了月を越えた後");
+		normal();
+	}
+} else {
+	console.log("セール年に該当しない");
+	normal();
+}
+	
+</script>
+</body>
+</html>
